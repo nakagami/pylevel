@@ -7,14 +7,14 @@ try:
 except ImportError:
     import subprocess
 
-    errno = subprocess.call([sys.executable, "-m", "pip", "install", "setuptools-rust"])
+    errno = subprocess.call([sys.executable, "-m", "pip", "install", "setuptools-rust==0.11.6"])
     if errno:
         print("Please install setuptools-rust package")
         raise SystemExit(errno)
     else:
         from setuptools_rust import RustExtension
 
-setup_requires = ["setuptools-rust>=0.12.1", "wheel"]
+setup_requires = ["setuptools-rust>=0.11", "wheel"]
 install_requires = []
 
 setup(
