@@ -11,7 +11,7 @@ readme = "README.md"
 keywords = ["leveldb"]
 
 [dependencies]
-leveldb = "0.8"
+rusty-leveldb = "0.3"
 
 [dependencies.pyo3]
 version = "0.13"
