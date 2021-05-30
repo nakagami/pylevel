@@ -2,7 +2,7 @@
 
 ## Requirements
 
-- python3.6+
+- python3.8+
 - Rust https://www.rust-lang.org/learn/get-started
 - Crate rusty-leveldb https://docs.rs/rusty-leveldb
 - python3-dev packages https://github.com/PyO3/pyo3#usage
