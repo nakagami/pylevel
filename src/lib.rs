@@ -21,19 +21,31 @@
 *OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 *SOFTWARE.
 */
-
 use leveldb::database::Database;
+use leveldb::options::{Options, ReadOptions, WriteOptions};
 use pyo3::prelude::*;
 use pyo3::wrap_pyfunction;
+use std::path::Path;
 
 #[pyclass]
-struct DB {}
+struct DB {
+    database: Database<i32>,
+}
 
 #[pymethods]
 impl DB {
     #[new]
-    fn new(path: String, create_if_missing: Option<bool>) -> Self {
-        DB {}
+    fn new(dirname: &str, create_if_missing: Option<bool>) -> Self {
+        let mut options = Options::new();
+        options.create_if_missing = match create_if_missing {
+            Some(b) => b,
+            None => false,
+        };
+
+        let path = Path::new(dirname);
+        let mut database = Database::open(path, options).unwrap();
+
+        DB { database }
     }
 }
 
