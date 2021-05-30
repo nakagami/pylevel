@@ -11,6 +11,6 @@
 ```
 $ sudo apt-get install python3-dev libleveldb-dev libsnappy-dev
 $ curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
-$ pip install pyawabi
+$ pip install pylevel
 ```
 
