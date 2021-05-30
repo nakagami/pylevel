@@ -14,7 +14,7 @@ except ImportError:
     else:
         from setuptools_rust import RustExtension
 
-setup_requires = ["setuptools-rust>=0.10.1", "wheel"]
+setup_requires = ["setuptools-rust>=0.12.1", "wheel"]
 install_requires = []
 
 setup(
