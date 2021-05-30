@@ -4,6 +4,7 @@
 
 - python3.6+
 - Rust https://www.rust-lang.org/learn/get-started
+- Crate leveldb https://docs.rs/leveldb
 - python3-dev packages https://github.com/PyO3/pyo3#usage
 
 ## Install
