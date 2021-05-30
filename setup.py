@@ -41,7 +41,7 @@ setup(
     author='Hajime Nakagami',
     author_email='nakagami@gmail.com',
     packages=["pylevel"],
-    rust_extensions=[RustExtension("pylevel.pylevel")],
+    rust_extensions=[RustExtension("pylevel.rslevel")],
     setup_requires=setup_requires,
     zip_safe=False,
 )
