@@ -21,9 +21,8 @@
 *OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 *SOFTWARE.
 */
-use rusty_leveldb;
 use pyo3::prelude::*;
-use pyo3::wrap_pyfunction;
+use rusty_leveldb;
 use std::path::Path;
 
 #[pyclass]
@@ -42,9 +41,27 @@ impl DB {
         };
 
         let path = Path::new(dirname);
-        let mut database = rusty_leveldb::DB::open(path, options).unwrap();
-
+        let database = rusty_leveldb::DB::open(path, options).unwrap();
         DB { database }
+    }
+
+    pub fn get(&mut self, key: &[u8]) -> PyResult<Option<Vec<u8>>> {
+        Ok(self.database.get(key))
+    }
+
+    pub fn put(&mut self, k: &[u8], v: &[u8]) -> PyResult<()> {
+        self.database.put(k, v);
+        Ok(())
+    }
+
+    pub fn delete(&mut self, key: &[u8]) -> PyResult<()> {
+        self.database.delete(key);
+        Ok(())
+    }
+
+    pub fn flush(&mut self) -> PyResult<()> {
+        self.database.flush();
+        Ok(())
     }
 }
 
