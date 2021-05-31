@@ -17,3 +17,6 @@ class DB:
 
     def flush(self):
         sef.flush()
+
+    def close(self):
+        del self.db

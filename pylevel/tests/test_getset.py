@@ -12,5 +12,4 @@ class TestGetSet(unittest.TestCase):
         self.assertEqual(self.db.get(b'key'), None)
 
     def tearDown(self):
-        pass
-        # TODO: close db
+        self.db.close()
