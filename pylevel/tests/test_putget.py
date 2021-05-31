@@ -4,11 +4,11 @@ import tempfile
 
 import pylevel
 
-class TestGetSet(unittest.TestCase):
+class TestPutGet(unittest.TestCase):
     def setUp(self):
         self.db = pylevel.DB(tempfile.mktemp(), create_if_missing=True)
 
-    def test_getset(self):
+    def test_putget(self):
         self.assertEqual(self.db.get(b'key'), None)
 
         self.db.put(b'key', b'value')

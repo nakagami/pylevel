@@ -1,1 +1,1 @@
-from pylevel.tests.test_getset import *     # noqa
+from pylevel.tests.test_putget import *     # noqa
