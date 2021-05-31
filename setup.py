@@ -1,6 +1,5 @@
 import sys
-
-from setuptools import setup
+from setuptools import setup, Command
 
 try:
     from setuptools_rust import RustExtension
@@ -13,6 +12,28 @@ except ImportError:
         raise SystemExit(errno)
     else:
         from setuptools_rust import RustExtension
+
+
+class TestCommand(Command):
+    user_options = []
+
+    def initialize_options(self):
+        pass
+
+    def finalize_options(self):
+        pass
+
+    def run(self):
+        '''
+        Finds all the tests modules in tests/, and runs them.
+        '''
+        from pylevel import tests
+        import unittest
+        unittest.main(tests, argv=sys.argv[:1])
+
+
+cmdclass = {'test': TestCommand}
+
 
 setup_requires = ["setuptools-rust>=0.11", "wheel"]
 install_requires = []
@@ -42,4 +63,5 @@ setup(
     rust_extensions=[RustExtension("pylevel.rslevel")],
     setup_requires=setup_requires,
     zip_safe=False,
+    cmdclass=cmdclass,
 )
