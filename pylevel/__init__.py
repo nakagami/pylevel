@@ -1,8 +1,8 @@
-from .rslevel import DB as BaseDB
+from .rslevel import DB as InnterDB
 
 class DB:
     def __init__(self, dirname, create_if_missing):
-        self.db = BaseDB(dirname, create_if_missing=create_if_missing)
+        self.db = InnterDB(dirname, create_if_missing=create_if_missing)
 
     def get(self, k):
         if v:= self.db.get(k):
