@@ -1,4 +1,5 @@
 from .rslevel import DB as InnterDB
+from .rslevel import LockError
 
 class DB:
     def __init__(self, dirname, create_if_missing=False):

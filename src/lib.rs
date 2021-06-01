@@ -24,7 +24,6 @@
 use pyo3::create_exception;
 use pyo3::exceptions::PyException;
 use pyo3::prelude::*;
-use pyo3::types::IntoPyDict;
 use rusty_leveldb;
 use std::path::Path;
 
@@ -38,7 +37,7 @@ struct DB {
 #[pymethods]
 impl DB {
     #[new]
-    fn new(dirname: &str, create_if_missing: Option<bool>) -> Self {
+    fn new(dirname: &str, create_if_missing: Option<bool>) -> PyResult<Self> {
         let mut options = rusty_leveldb::Options::default();
         options.create_if_missing = match create_if_missing {
             Some(b) => b,
@@ -46,11 +45,17 @@ impl DB {
         };
 
         let path = Path::new(dirname);
-
-        // TODO: raise LockError if opened https://pyo3.rs/v0.2.7/exception.html
-
-        let database = rusty_leveldb::DB::open(path, options).unwrap();
-        DB { database }
+        match rusty_leveldb::DB::open(path, options) {
+            Ok(database) => {
+                Ok(DB { database })
+            },
+            Err(status) => {
+                match status.code {
+                    rusty_leveldb::StatusCode::LockError => Err(LockError::new_err(status.err)),
+                    _ => Err(PyException::new_err(status.err)),
+                }
+            },
+        }
     }
 
     pub fn get(&mut self, key: &[u8]) -> PyResult<Option<Vec<u8>>> {
@@ -58,17 +63,17 @@ impl DB {
     }
 
     pub fn put(&mut self, k: &[u8], v: &[u8]) -> PyResult<()> {
-        self.database.put(k, v);
+        self.database.put(k, v).unwrap();
         Ok(())
     }
 
     pub fn delete(&mut self, key: &[u8]) -> PyResult<()> {
-        self.database.delete(key);
+        self.database.delete(key).unwrap();
         Ok(())
     }
 
     pub fn flush(&mut self) -> PyResult<()> {
-        self.database.flush();
+        self.database.flush().unwrap();
         Ok(())
     }
 }
@@ -77,8 +82,9 @@ impl DB {
 fn rslevel(_py: Python, m: &PyModule) -> PyResult<()> {
     let gil = Python::acquire_gil();
     let py = gil.python();
-    let ctx = [("LockError", py.get_type::<LockError>())].into_py_dict(py);
 
     m.add_class::<DB>()?;
+    m.add("LockError", py.get_type::<LockError>())?;
+
     Ok(())
 }

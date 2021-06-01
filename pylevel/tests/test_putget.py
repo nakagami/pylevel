@@ -10,8 +10,8 @@ class TestPutGet(unittest.TestCase):
         self.db = pylevel.DB(self.path, create_if_missing=True)
 
     def test_putget(self):
-
-        pylevel.DB(self.path)
+        with self.assertRaises(pylevel.LockError):
+            pylevel.DB(self.path)
 
         self.assertEqual(self.db.get(b'key'), None)
 
