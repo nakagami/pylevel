@@ -1,7 +1,7 @@
 from .rslevel import DB as InnterDB
 
 class DB:
-    def __init__(self, dirname, create_if_missing):
+    def __init__(self, dirname, create_if_missing=False):
         self.db = InnterDB(dirname, create_if_missing=create_if_missing)
 
     def get(self, k):
