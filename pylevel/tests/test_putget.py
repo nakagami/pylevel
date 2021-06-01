@@ -6,9 +6,13 @@ import pylevel
 
 class TestPutGet(unittest.TestCase):
     def setUp(self):
-        self.db = pylevel.DB(tempfile.mktemp(), create_if_missing=True)
+        self.path = tempfile.mktemp()
+        self.db = pylevel.DB(self.path, create_if_missing=True)
 
     def test_putget(self):
+
+        pylevel.DB(self.path)
+
         self.assertEqual(self.db.get(b'key'), None)
 
         self.db.put(b'key', b'value')

@@ -21,9 +21,14 @@
 *OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 *SOFTWARE.
 */
+use pyo3::create_exception;
+use pyo3::exceptions::PyException;
 use pyo3::prelude::*;
+use pyo3::types::IntoPyDict;
 use rusty_leveldb;
 use std::path::Path;
+
+create_exception!(rsmodule, LockError, PyException);
 
 #[pyclass]
 struct DB {
@@ -41,6 +46,9 @@ impl DB {
         };
 
         let path = Path::new(dirname);
+
+        // TODO: raise LockError if opened https://pyo3.rs/v0.2.7/exception.html
+
         let database = rusty_leveldb::DB::open(path, options).unwrap();
         DB { database }
     }
@@ -67,6 +75,10 @@ impl DB {
 
 #[pymodule]
 fn rslevel(_py: Python, m: &PyModule) -> PyResult<()> {
+    let gil = Python::acquire_gil();
+    let py = gil.python();
+    let ctx = [("LockError", py.get_type::<LockError>())].into_py_dict(py);
+
     m.add_class::<DB>()?;
     Ok(())
 }
