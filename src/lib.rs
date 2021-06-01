@@ -46,14 +46,10 @@ impl DB {
 
         let path = Path::new(dirname);
         match rusty_leveldb::DB::open(path, options) {
-            Ok(database) => {
-                Ok(DB { database })
-            },
-            Err(status) => {
-                match status.code {
-                    rusty_leveldb::StatusCode::LockError => Err(LockError::new_err(status.err)),
-                    _ => Err(PyException::new_err(status.err)),
-                }
+            Ok(database) => Ok(DB { database }),
+            Err(status) => match status.code {
+                rusty_leveldb::StatusCode::LockError => Err(LockError::new_err(status.err)),
+                _ => Err(PyException::new_err(status.err)),
             },
         }
     }
