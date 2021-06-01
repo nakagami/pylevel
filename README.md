@@ -15,9 +15,9 @@ $ sudo apt-get install python3-dev
 $ pip install pylevel
 ```
 
-## Excample
+## Example
 
-simple put/get/delete
+### simple put/get/delete
 ```
 import pylevel
 db = pylevel.DB("/tmp/testdb", create_if_missing=True)
