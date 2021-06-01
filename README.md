@@ -1,17 +1,32 @@
 # pylevel
 
+PyLevel is a LevelDB driver for python.
+It use rust reimplementation of LevelDB https://docs.rs/rusty-leveldb .
+
 ## Requirements
 
 - python3.8+
-- Rust https://www.rust-lang.org/learn/get-started
-- Crate rusty-leveldb https://docs.rs/rusty-leveldb
-- python3-dev packages https://github.com/PyO3/pyo3#usage
+- Rust https://www.rust-lang.org/
 
 ## Install
 
 ```
 $ sudo apt-get install python3-dev
-$ curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
 $ pip install pylevel
 ```
 
+## Excample
+
+simple put/get/delete
+```
+import pylevel
+db = pylevel.DB("/tmp/testdb", create_if_missing=True)
+
+db.put(b'key', b'value')
+v = db.get(b'key')      # 'value'
+
+db.delete(b'key')
+v = db.get(b'key')      # None
+
+db.close()
+```
