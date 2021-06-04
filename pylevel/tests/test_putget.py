@@ -1,8 +1,7 @@
-import os
 import unittest
 import tempfile
-
 import pylevel
+
 
 class TestPutGet(unittest.TestCase):
     def setUp(self):
@@ -19,6 +18,11 @@ class TestPutGet(unittest.TestCase):
         self.assertEqual(self.db.get(b'key'), b'value')
 
         self.db.put(b'key', b'value2')
+        self.assertEqual(self.db.get(b'key'), b'value2')
+
+        # reopen
+        self.db.close()
+        self.db = pylevel.DB(self.path)
         self.assertEqual(self.db.get(b'key'), b'value2')
 
         self.db.delete(b'key')
