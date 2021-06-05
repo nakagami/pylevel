@@ -27,7 +27,7 @@ use pyo3::prelude::*;
 use rusty_leveldb;
 use std::path::Path;
 
-create_exception!(rsmodule, LevelDBError, PyException);
+create_exception!(rsmodule, LockError, PyException);
 
 #[pyclass]
 struct DB {
@@ -48,7 +48,7 @@ impl DB {
         match rusty_leveldb::DB::open(path, options) {
             Ok(database) => Ok(DB { database }),
             Err(status) => match status.code {
-                rusty_leveldb::StatusCode::LevelDBError => Err(LevelDBError::new_err(status.err)),
+                rusty_leveldb::StatusCode::LockError => Err(LockError::new_err(status.err)),
                 _ => Err(PyException::new_err(status.err)),
             },
         }
@@ -80,7 +80,7 @@ fn rslevel(_py: Python, m: &PyModule) -> PyResult<()> {
     let py = gil.python();
 
     m.add_class::<DB>()?;
-    m.add("LevelDBError", py.get_type::<LevelDBError>())?;
+    m.add("LockError", py.get_type::<LockError>())?;
 
     Ok(())
 }
