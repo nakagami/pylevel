@@ -40,7 +40,7 @@ install_requires = []
 
 setup(
     name="pylevel",
-    version="0.1.0",
+    version= __import__('pylevel').__version__,
     description='A LevelDB driver',
     long_description=open('README.md', encoding='utf-8').read(),
     long_description_content_type="text/markdown",
